@@ -170,7 +170,7 @@ int main() {
     cout << returnTest1().i << endl;
     cout << returnTest2().i << endl;
 
-    TestUint16 tu16a;
+//    TestUint16 tu16a;
 
     return 0;
 }
