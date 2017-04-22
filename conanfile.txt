@@ -1,0 +1,20 @@
+[requires]
+Boost/1.60.0@lasote/stable
+caf/0.15.2@sourcedelica/testing
+catch/1.5.9@sourcedelica/testing
+cppzmq/4.2.0@memsharded/stable
+grpc/1.0.1@sourcedelica/testing
+nanodbc/latest@signal9/stable
+Protobuf/3.0.2@sourcedelica/testing
+range-v3/latest@ericniebler/stable
+spdlog/0.10.0@memsharded/stable
+type_safe/0.1@Manu343726/testing
+
+# TODO - folly
+# TODO - google/fruit
+
+[generators]
+cmake
+
+[options]
+Protobuf:shared=False
