@@ -35,6 +35,9 @@ set(CAF_LIBS
         ${CAF_LIB_DIR}/libcaf_io_static.a
         ${CAF_LIB_DIR}/libcaf_core_static.a)
 
+# Uncomment to temporarily add CAF source to project for debugging (make sure it's the same version!)
+#add_subdirectory(/Users/eric/IdeaProjects/actor-framework caf-source)
+
 # Catch
 set(CATCH_INC_DIR ${CONAN_INCLUDE_DIRS_CATCH} CACHE PATH "Catch include directory")      # Conan
 
@@ -94,7 +97,7 @@ add_executable(type_index type_index.cpp)
 add_executable(type_safe type_safe.cpp)
 add_executable(numeric_range numeric_range.cpp)
 
-#add_subdirectory(caf)
+add_subdirectory(caf)
 add_subdirectory(common)
 add_subdirectory(gaffer)
 #add_subdirectory(grpc)

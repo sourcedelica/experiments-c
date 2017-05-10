@@ -1,13 +1,12 @@
 [requires]
 # TODO - upgrade to 1.63
 Boost/1.60.0@lasote/stable
-# TODO - upgrade to 0.15.3
-caf/0.15.2@sourcedelica/testing
+caf/0.15.3@sourcedelica/testing
 catch/1.9.1@sourcedelica/testing
-#cppzmq/4.2.0@memsharded/stable
+cppzmq/4.2.0@memsharded/stable
 #grpc/1.0.1@sourcedelica/testing
 #nanodbc/latest@signal9/stable
-#Protobuf/3.0.2@sourcedelica/testing
+Protobuf/3.3.0@sourcedelica/testing
 range-v3/latest@ericniebler/stable
 spdlog/0.10.0@memsharded/stable
 type_safe/0.1@Manu343726/testing
