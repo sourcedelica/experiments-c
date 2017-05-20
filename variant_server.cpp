@@ -2,8 +2,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <boost/variant.hpp>
-
-template <typename T> using identity_t = T;
+#include "make_overload.h"
 
 // Contains any server functionality that components need to access
 class Server {
@@ -18,12 +17,14 @@ public:
     using component_t = boost::variant<Ts...>;
 
     CompositeServer() : Server() {
-        registerBase<Ts...>(identity_t<Ts>(this)...);
+        registerComponent<Ts...>(std::forward<Ts>(Ts(this))...);
         connectAll();
     }
 
     ~CompositeServer() {
-        visitor_closer_t visitor;
+        auto visitor = vrm::make_overload(
+                [](auto &component){ component.close(); }
+        );
         for (auto &tup : components) {
             boost::apply_visitor(visitor, tup.second);
         }
@@ -32,37 +33,25 @@ public:
 private:
     std::unordered_map<std::string, component_t> components;
 
-    // TODO - replace these functors with lambdas using boost::hana::overload or vr::core
-    struct visitor_closer_t {
-        template <typename T>
-        void operator()(T base) {
-            base.close();
-        }
-    };
-
-    struct visitor_connect_t {
-        template <typename T>
-        auto operator()(T base) -> decltype(base.connect(), void()){
-            base.connect();
-        }
-        auto operator()(...) -> void {}
-    };
-
     template <typename T>
-    void registerBase(T&& policy) {
+    void registerComponent(T &&policy) {
         std::string name = policy.name();
         std::cout << "Registering: " << name << std::endl;
         components[name] = std::move(policy);
+        auto i = 0;
     }
 
     template <typename T, typename ...Tz>
-    void registerBase(T&& t, Tz&&... ts) {
-        registerBase(std::forward<T>(t));
-        registerBase<Tz...>(std::forward<Tz>(ts)...);
+    void registerComponent(T&& t, Tz&&... ts) {
+        registerComponent(std::forward<T>(t));
+        registerComponent<Tz...>(std::forward<Tz>(ts)...);
     }
 
     void connectAll() {
-        visitor_connect_t visitor;
+        auto visitor = vrm::make_overload(
+                [](auto &component) -> decltype(component.connect(), void()) { component.connect(); },
+                [](...) -> void {}
+        );
         for (auto &tup : components) {
             boost::apply_visitor(visitor, tup.second);
         }
@@ -72,9 +61,20 @@ private:
 class NetworkA {
 public:
     NetworkA() = default;
+    NetworkA(const NetworkA&) = delete;
+    NetworkA(NetworkA&&) = default;
+    NetworkA& operator=(NetworkA&) = delete;
+    NetworkA& operator=(NetworkA&& that) = default;
+//    {
+//        server = that.server;
+//        that.server = nullptr;
+//        return *this;
+//    };
 
     template <typename ...Ts>
     NetworkA(CompositeServer<Ts...> *server) : server(server) {}
+
+    ~NetworkA() { std::cout << "Destroying: " << name() << " server: " << server << std::endl; }
 
     std::string name() { return "NetworkA"; }
 

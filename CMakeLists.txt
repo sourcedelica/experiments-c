@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(experiments)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 
 # Run "conan install .." in the "build" directory to create this file
 if(EXISTS ${CMAKE_SOURCE_DIR}/conanbuildinfo.cmake)
@@ -96,7 +96,7 @@ add_executable(template_via_pointer template_via_pointer.cpp)
 add_executable(tuple_iterator_main tuple_iterator_main.cpp tuple_iterator.h)
 add_executable(type_index type_index.cpp)
 add_executable(type_safe type_safe.cpp)
-add_executable(variant_server variant_server.cpp)
+add_executable(variant_server variant_server.cpp make_overload.h)
 
 add_subdirectory(caf)
 add_subdirectory(common)
