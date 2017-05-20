@@ -2,7 +2,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <boost/variant.hpp>
-#include "make_overload.h"
+#include "match.h"
 
 // Contains any server functionality that components need to access
 class Server {
@@ -22,11 +22,8 @@ public:
     }
 
     ~CompositeServer() {
-        auto visitor = vrm::make_overload(
-                [](auto &component){ component.close(); }
-        );
         for (auto &tup : components) {
-            boost::apply_visitor(visitor, tup.second);
+            vrm::match(tup.second)([](auto &component){ component.close(); });
         }
     }
 
@@ -48,19 +45,18 @@ private:
     }
 
     void connectAll() {
-        auto visitor = vrm::make_overload(
+        for (auto &tup : components) {
+            vrm::match(tup.second)(
                 [](auto &component) -> decltype(component.connect(), void()) { component.connect(); },
                 [](...) -> void {}
-        );
-        for (auto &tup : components) {
-            boost::apply_visitor(visitor, tup.second);
+            );
         }
     }
 };
 
 class NetworkA {
 public:
-    NetworkA() = default;
+    NetworkA() = default;                // Needed for variant
     NetworkA(const NetworkA&) = delete;  // Move-only
     NetworkA& operator=(NetworkA&) = delete;
     // Note: when moving, make sure that when moved-from destructor runs it is safe
@@ -70,13 +66,15 @@ public:
     template <typename ...Ts>
     NetworkA(CompositeServer<Ts...> *server) : server(server) {}
 
-    ~NetworkA() { std::cout << "Destroying: " << name() << " server: " << server << std::endl; }
+    ~NetworkA() { std::cout << "Destroying: " << Name << std::endl; }
 
-    std::string name() { return "NetworkA"; }
+    static constexpr const char *Name = "NetworkA";
 
-    void close() { std::cout << "Closing: " << name() << std::endl; }
+    std::string name() { return Name; }
 
-    void connect() { std::cout << "Connecting: " << name() << std::endl; }
+    void close() { std::cout << "Closing: " << Name << std::endl; }
+
+    void connect() { std::cout << "Connecting: " << Name << std::endl; }
 
     void networkA() {}
 
@@ -91,11 +89,13 @@ public:
     template <typename ...Ts>
     NetworkB(CompositeServer<Ts...> *server) : server(server) {}
 
-    std::string name() { return "NetworkB"; }
+    static constexpr const char *Name = "NetworkB";
 
-    void close() { std::cout << "Closing: " << name() << std::endl; }
+    std::string name() { return Name; }
 
-    void connect() { std::cout << "Connecting: " << name() << std::endl; }
+    void close() { std::cout << "Closing: " << Name << std::endl; }
+
+    void connect() { std::cout << "Connecting: " << Name << std::endl; }
 
     void networkB() {}
 
@@ -110,9 +110,11 @@ public:
     template <typename ...Ts>
     Database(CompositeServer<Ts...> *server) : server(server) {}
 
-    std::string name() { return "Database"; }
+    static constexpr const char *Name = "Database";
 
-    void close() { std::cout << "Closing: " << name() << std::endl; }
+    std::string name() { return Name; }
+
+    void close() { std::cout << "Closing: " << Name << std::endl; }
 
     void database() {}
 

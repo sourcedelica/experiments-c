@@ -96,7 +96,7 @@ add_executable(template_via_pointer template_via_pointer.cpp)
 add_executable(tuple_iterator_main tuple_iterator_main.cpp tuple_iterator.h)
 add_executable(type_index type_index.cpp)
 add_executable(type_safe type_safe.cpp)
-add_executable(variant_server variant_server.cpp make_overload.h)
+add_executable(variant_server variant_server.cpp match.h)
 
 add_subdirectory(caf)
 add_subdirectory(common)

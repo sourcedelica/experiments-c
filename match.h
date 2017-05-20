@@ -6,6 +6,7 @@
 #pragma once
 
 #include <utility>
+#include <boost/variant.hpp>
 
 namespace vrm
 {
@@ -48,5 +49,16 @@ namespace vrm
     inline auto make_overload(TFs && ... fs) noexcept
     {
         return impl::overload_set<TFs...>{std::forward<TFs>(fs)...};
+    }
+
+    template <typename... TVariants>
+    constexpr auto match(TVariants&&... vs)
+    {
+        return [&vs...](auto&&... fs) -> decltype(auto)
+        {
+            auto visitor = make_overload(std::forward<decltype(fs)>(fs)...);
+
+            return boost::apply_visitor(visitor, std::forward<TVariants>(vs)...);
+        };
     }
 }
