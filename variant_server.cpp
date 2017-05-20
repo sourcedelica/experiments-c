@@ -13,9 +13,9 @@ public:
 // Contains the components
 template <typename ...Ts>
 class CompositeServer : public Server {
-public:
     using component_t = boost::variant<Ts...>;
 
+public:
     CompositeServer() : Server() {
         registerComponent<Ts...>(std::forward<Ts>(Ts(this))...);
         connectAll();
@@ -37,7 +37,7 @@ private:
     void registerComponent(T &&policy) {
         std::string name = policy.name();
         std::cout << "Registering: " << name << std::endl;
-        components[name] = std::move(policy);
+        components.emplace(name, std::move(policy));
         auto i = 0;
     }
 
@@ -61,15 +61,11 @@ private:
 class NetworkA {
 public:
     NetworkA() = default;
-    NetworkA(const NetworkA&) = delete;
-    NetworkA(NetworkA&&) = default;
+    NetworkA(const NetworkA&) = delete;  // Move-only
     NetworkA& operator=(NetworkA&) = delete;
+    // Note: when moving, make sure that when moved-from destructor runs it is safe
+    NetworkA(NetworkA&&) = default;
     NetworkA& operator=(NetworkA&& that) = default;
-//    {
-//        server = that.server;
-//        that.server = nullptr;
-//        return *this;
-//    };
 
     template <typename ...Ts>
     NetworkA(CompositeServer<Ts...> *server) : server(server) {}
