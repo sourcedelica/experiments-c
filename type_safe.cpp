@@ -10,6 +10,14 @@ struct my_module
       debug_assert::set_level<5>     // level 0 would mean none, 1 would be level 1, 2 level 2 or lower,...
 {};
 
+struct Foo {
+    Foo() { std::cout << "Foo default ctor" << std::endl; }
+};
+
+struct Bar {
+    Bar() { std::cout << "Bar default ctor" << std::endl; }
+};
+
 ts::optional<int> foo(int i) {
     return i > 0 ? i * 2 : ts::optional<int>();
 }
@@ -31,4 +39,7 @@ int main() {
     ts::with(bv, [](int) { DEBUG_ASSERT(false, my_module{}); });
     ts::with(bv, [](std::string s) { std::cout << s << std::endl; });
     ts::with(bv, [](double) { DEBUG_ASSERT(false, my_module{}); });
+
+    ts::basic_variant<ts::optional_variant_policy, Foo, Bar> empty;
+
 }

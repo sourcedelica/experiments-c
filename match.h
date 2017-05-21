@@ -52,11 +52,25 @@ namespace vrm
     }
 
     template <typename... TVariants>
-    constexpr auto match(TVariants&&... vs)
+    constexpr auto matchExact(TVariants&&... vs)
     {
         return [&vs...](auto&&... fs) -> decltype(auto)
         {
             auto visitor = make_overload(std::forward<decltype(fs)>(fs)...);
+
+            return boost::apply_visitor(visitor, std::forward<TVariants>(vs)...);
+        };
+    }
+
+    template <typename... TVariants>
+    constexpr auto match(TVariants&&... vs)
+    {
+        return [&vs...](auto&&... fs) -> decltype(auto)
+        {
+            auto visitor = make_overload(
+                    std::forward<decltype(fs)>(fs)...,
+                    [](auto& ...) -> void {}
+            );
 
             return boost::apply_visitor(visitor, std::forward<TVariants>(vs)...);
         };
