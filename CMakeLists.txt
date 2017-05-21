@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(experiments)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
 
 # Run "conan install .." in the "build" directory to create this file
 if(EXISTS ${CMAKE_SOURCE_DIR}/conanbuildinfo.cmake)

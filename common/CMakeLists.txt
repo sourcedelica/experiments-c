@@ -1,13 +1,6 @@
 set(SOURCES
-        Envelope.cpp
-        PingPong.cpp
-        Registration.cpp
-        ThreadResource.h ScopedThread.h)
-
-set(PROTOS
-        Envelope.proto
-        PingPong.proto
-        Registration.proto)
+        ScopedThread.h
+        ThreadResource.h )
 
 # CAF
 include_directories(${CAF_INC_DIR})

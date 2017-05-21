@@ -1,7 +1,0 @@
-message EnvelopeProto {
-    optional int64 CorrelationID = 1;
-    optional int32 ClientID = 2;
-    optional int32 Type = 3;
-    optional int64 TimeoutMs = 4;
-    optional bool OneWay = 5;
-}

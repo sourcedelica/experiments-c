@@ -1,5 +1,0 @@
-message PingPongProto {
-    optional int32 ID = 1;
-    optional int32 Type = 2;
-    optional int32 ClientId = 3;
-}

@@ -1,11 +1,6 @@
 set(SOURCES
         main.cpp
-        EnvelopeTest.cpp
-        PingPongTest.cpp
-        RegistrationTest.cpp
-        ScopedThreadTest.cpp
-        ../Envelope.cpp
-        ../IdGenerator.h)
+        ScopedThreadTest.cpp)
 
 include_directories(${CATCH_INC_DIR})
 
