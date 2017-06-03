@@ -2,19 +2,7 @@
 
 // Adapted from http://www.fluentcpp.com/2017/06/02/write-template-metaprogramming-expressively/
 // Also see http://en.cppreference.com/w/cpp/experimental/is_detected
-
-template <typename...>
-using void_t = void;
-
-template <template <typename...> class Expression, typename Attempt, typename... Ts>
-struct is_detected_impl : std::false_type{};
-
-template <template <typename...> class Expression, typename... Ts>
-struct is_detected_impl<Expression, void_t<Expression<Ts...>>, Ts...> : std::true_type{};
-
-template <template <typename...> class Expression, typename... Ts>
-constexpr bool is_detected = is_detected_impl<Expression, void, Ts...>::value;
-
+#include "is_detected.h"
 
 template <typename T, typename U>
 using assignable_expression = decltype(std::declval<T&>() = std::declval<const U&>());
