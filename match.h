@@ -68,8 +68,8 @@ namespace vrm
         return [&vs...](auto&&... fs) -> decltype(auto)
         {
             auto visitor = make_overload(
-                    std::forward<decltype(fs)>(fs)...,
-                    [](auto& ...) -> void {}
+                std::forward<decltype(fs)>(fs)...,
+                [](auto& ...) -> void {}  // Catch-all
             );
 
             return boost::apply_visitor(visitor, std::forward<TVariants>(vs)...);

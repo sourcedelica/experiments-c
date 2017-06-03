@@ -1,13 +1,16 @@
 #include <iostream>
 #include <cstdarg>
 #include <experimental/optional>
+#include <experimental/string_view>
 #include <unordered_map>
 #include <vector>
 
 using namespace std;
+using namespace std::literals;
 using std::experimental::optional;
+using std::experimental::string_view;
 
-
+// #Val is stringify
 #define ENUM_NAME(Val)  #Val
 
 enum class EnumClass {
@@ -106,6 +109,24 @@ unique_ptr<T> giveBack(unique_ptr<T> ptr) {
     return ptr;
 }
 
+void someFun() {
+    std::cout << "We're certainly having some fun" << std::endl;
+}
+
+template <typename Fun>
+struct FunSaver {
+    Fun &fun;
+
+    FunSaver(Fun &fun_in) : fun(fun_in) {}
+
+    void call() { fun(); }
+};
+
+template <typename Fun>
+void callAFun(Fun &fun) {
+    fun();
+}
+
 optional<int> testOptional() {
     optional<int> oi1 = 1;
     optional<int> oi2 = optional<int>(2);
@@ -120,6 +141,10 @@ Test returnTest1() {
 
 Test returnTest2() {
     return Test{};
+}
+
+void printStringView(string_view sv) {
+    std::cout << "String view: " << sv << std::endl;
 }
 
 int main() {
@@ -171,6 +196,13 @@ int main() {
     cout << returnTest2().i << endl;
 
 //    TestUint16 tu16a;
+
+    FunSaver<decltype(someFun)> fs(someFun);
+    fs.call();
+//    callAFun(someFun);
+
+//    cout << "this is a sv string literal"sv << std::endl;
+    printStringView("a string literal");
 
     return 0;
 }
