@@ -3,7 +3,7 @@
 template <typename...>
 using void_t = void;
 
-template <template <typename...> class Expression, typename Attempt, typename... Ts>
+template <template <typename...> class Expression, typename AlwaysVoid, typename... Ts>
 struct is_detected_impl : std::false_type{};
 
 template <template <typename...> class Expression, typename... Ts>
