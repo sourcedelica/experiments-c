@@ -2,7 +2,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <boost/variant.hpp>
-#include "match.h"
+#include "match_hana.h"
 
 // Server functionality that components need to access
 // Note - not templated, so can be implemented in .cpp
@@ -46,7 +46,7 @@ private:
     // Call connect() on all components that have that method
     void connectAll() {
         for (auto& tup : components) {
-            vrm::match(tup.second)(
+            match(tup.second)(
                 [](auto& component) -> decltype(component.connect(), void()) {
                     component.connect();
                 }
@@ -57,7 +57,7 @@ private:
     // Call close() on all components that have that method
     void closeAll() {
         for (auto& tup : components) {
-            vrm::match(tup.second)(
+            match(tup.second)(
                 [](auto& component) -> decltype(component.close(), void()) {
                     component.close();
                 }
@@ -74,19 +74,13 @@ public:
     NetworkA(const NetworkA&) = delete;       // Move-only
     NetworkA& operator=(NetworkA&) = delete;
 
-    template <typename ...Ts>
-    NetworkA(CompositeServer<Ts...>* server) : server(server) {}
-
+    template <typename ...Ts> NetworkA(CompositeServer<Ts...>* server) : server(server) {}
     ~NetworkA() { std::cout << "Destroying: " << Name << std::endl; }
 
     static constexpr const char* Name = "NetworkA";
-
     std::string name() { return Name; }
-
     void close() { std::cout << "Closing: " << Name << std::endl; }
-
     void connect() { std::cout << "Connecting: " << Name << std::endl; }
-
     void networkA() {}
 
 private:
@@ -100,19 +94,13 @@ public:
     NetworkB(const NetworkB&) = delete;
     NetworkB& operator=(NetworkB&) = delete;
     
-    template <typename ...Ts>
-    NetworkB(CompositeServer<Ts...>* server) : server(server) {}
-
+    template <typename ...Ts> NetworkB(CompositeServer<Ts...>* server) : server(server) {}
     ~NetworkB() { std::cout << "Destroying: " << Name << std::endl; }
 
     static constexpr const char* Name = "NetworkB";
-
     std::string name() { return Name; }
-
     void close() { std::cout << "Closing: " << Name << std::endl; }
-
     void connect() { std::cout << "Connecting: " << Name << std::endl; }
-
     void networkB() {}
 
 private:
@@ -128,15 +116,11 @@ public:
 
     template <typename ...Ts>
     Database(CompositeServer<Ts...>* server) : server(server) {}
-
     ~Database() { std::cout << "Destroying: " << Name << std::endl; }
 
     static constexpr const char* Name = "Database";
-
     std::string name() { return Name; }
-
     void close() { std::cout << "Closing: " << Name << std::endl; }
-
     void database() {}
 
 private:

@@ -36,11 +36,19 @@ target_link_libraries(ranges CONAN_PKG::range-v3)
 add_executable(reference_slicing reference_slicing.cpp)
 add_executable(stop_problem stop_problem.cpp)
 add_executable(template_via_pointer template_via_pointer.cpp)
+
+add_executable(to_string_detected to_string_detected.cpp match_hana.h)
+target_link_libraries(to_string_detected CONAN_PKG::Boost)
+
 add_executable(tuple_iterator_main tuple_iterator_main.cpp tuple_iterator.h)
+
 add_executable(type_index type_index.cpp)
+target_link_libraries(type_index CONAN_PKG::Boost)
 
 add_executable(type_safe type_safe.cpp)
 target_link_libraries(type_safe CONAN_PKG::type_safe CONAN_PKG::debug_assert)
+
+add_executable(variadic_fmin variadic_fmin.cpp)
 
 add_executable(variant_server variant_server.cpp match.h)
 target_link_libraries(variant_server CONAN_PKG::Boost)
