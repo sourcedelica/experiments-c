@@ -33,7 +33,7 @@ namespace detail {
     constexpr bool has_ostringstream = is_detected<ostringstream_expression, T>;
 }
 
-// Converts toString(const T&) to std::to_string(const T&)
+// Using std::to_string
 template<
     typename T,
     typename std::enable_if<detail::has_std_to_string<T>, int>::type = 0
@@ -42,7 +42,7 @@ std::string toString(T const& t) {
     return std::to_string(t);
 }
 
-// Converts toString(const T&) -> non-member to_string(const T&) -> std::string
+// Using non-member to_string
 template<
     typename T,
     typename std::enable_if<!detail::has_std_to_string<T> && detail::has_non_member_to_string<T>, int>::type = 0
@@ -51,7 +51,7 @@ std::string toString(T const& t) {
     return to_string(t);
 }
 
-// Converts toString(const T& t) -> t.to_string() -> std::string
+// Using member to_string
 template<
     typename T,
     typename std::enable_if<detail::has_member_to_string<T>, int>::type = 0
@@ -60,7 +60,7 @@ std::string toString(T const& t) {
     return t.to_string();
 }
 
-// Converts toString(const T& t) -> ostringstream << t -> std::string
+// Using ostringstream
 template<
     typename T,
     typename std::enable_if<!detail::has_std_to_string<T> && !detail::has_non_member_to_string<T> &&

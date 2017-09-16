@@ -1,6 +1,8 @@
 #include <iostream>
 
 // Adapted from http://www.fluentcpp.com/2017/06/06/using-tostring-custom-types-cpp/
+// Another good explanation is at https://blog.tartanllama.xyz/detection-idiom/
+// Reference implementation for C++17: http://en.cppreference.com/w/cpp/experimental/is_detected
 #include "to_string_detected.h"
 
 // Has member to_string()

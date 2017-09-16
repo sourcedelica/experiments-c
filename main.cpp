@@ -204,6 +204,21 @@ int main() {
 //    cout << "this is a sv string literal"sv << std::endl;
     printStringView("a string literal");
 
+    struct CaptureTest {
+        int cx = 0;
+
+        void f() {
+            auto fcx = [=]{ std::cout << "cx=" << cx << std::endl; };
+            cx = 42;
+            fcx();
+            cx = 43;
+            fcx();
+        }
+    };
+
+    CaptureTest ct;
+    ct.f();
+
     return 0;
 }
 
