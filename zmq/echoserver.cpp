@@ -1,7 +1,6 @@
 #include <cstring>
 #include "zmq.hpp"
 
-
 int main (int argc, char *argv [])
 {
     bool verbose = false;
