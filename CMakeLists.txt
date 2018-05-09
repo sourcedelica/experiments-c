@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(experiments)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++1z")
+set(CMAKE_CXX_STANDARD 14)
 
 # Run "conan install .." in the "build" directory to create this file
 if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -26,6 +26,10 @@ add_definitions(-DDEBUG)
 add_executable(catch_example catch_example.cpp catch_main.cpp CatchTests.cpp)
 target_link_libraries(catch_example CONAN_PKG::catch2)
 
+add_executable(condition_variable_ping_pong condition_variable_ping_pong.cpp)
+target_compile_options(condition_variable_ping_pong PRIVATE -fsanitize=thread)
+target_link_libraries(condition_variable_ping_pong PRIVATE -fsanitize=thread)
+
 add_executable(cu_ordering_test CUTrace.h cu_ordering_test.cpp cu_ordering_test2.cpp)
 add_executable(experiments main.cpp)
 
@@ -43,6 +47,7 @@ target_link_libraries(ranges CONAN_PKG::range-v3)
 
 add_executable(reference_slicing reference_slicing.cpp)
 add_executable(rvalue_refs_in_apis rvalue_refs_in_apis.cpp)
+add_executable(self_registering_factory_lambda self_registering_factory_lambda.cpp)
 add_executable(stop_problem stop_problem.cpp)
 add_executable(template_via_pointer template_via_pointer.cpp)
 

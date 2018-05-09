@@ -1,19 +1,17 @@
 [requires]
 boost/1.66.0@conan/stable
-bzip2/1.0.6@conan/testing
-#caf/0.15.4@actor-framework/stable
+caf/0.15.6@bincrafters/stable
 catch2/2.2.2@bincrafters/stable
-#cppzmq/4.2.0@memsharded/stable
+cppzmq/4.2.2@bincrafters/stable
 #grpc/1.0.1@sourcedelica/testing
 #nanodbc/latest@signal9/stable
-#Protobuf/3.3.0@sourcedelica/testing
+protobuf/3.5.2@bincrafters/stable
 range-v3/0.3.5@ericniebler/stable
-spdlog/0.10.0@memsharded/stable
+spdlog/0.16.3@bincrafters/stable
 type_safe/0.1@Manu343726/testing
 zlib/1.2.11@conan/stable
 
 # TODO - folly
-# TODO - abseil
 # TODO - google/fruit
 # TODO - Google benchmark
 # TODO - boost.outcome
