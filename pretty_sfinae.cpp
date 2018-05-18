@@ -26,6 +26,9 @@ public:
 // The prettier version
 // from https://www.fluentcpp.com/2018/05/18/make-sfinae-pretty-2-hidden-beauty-sfinae/
 template<typename T>
+using IsNotReference = std::enable_if_t<!std::is_reference<T>::value>;
+
+template<typename T>
 class MyClass2
 {
 public:
@@ -33,10 +36,8 @@ public:
         std::cout << "T const &: " << x << std::endl;
     }
 
-    template<typename T_ = T>
-    void f(T&& x,
-           typename std::enable_if<!std::is_reference<T_>::value,
-                   std::nullptr_t>::type = nullptr) {
+    template<typename T_ = T, typename = IsNotReference <T_>>
+    void f(T&& x){
         std::cout << "T&&: " << x << std::endl;
     }
 };
