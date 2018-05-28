@@ -37,7 +37,7 @@ public:
     }
 
     template<typename T_ = T, typename = IsNotReference <T_>>
-    void f(T&& x){
+    void f(T&& x) {
         std::cout << "T&&: " << x << std::endl;
     }
 };

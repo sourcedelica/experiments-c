@@ -19,4 +19,4 @@ type_safe/0.1@Manu343726/testing
 cmake
 
 [options]
-Protobuf:shared=False
+protobuf:shared=False

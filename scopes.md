@@ -8,7 +8,7 @@ Config is composed of a number of features:
    format.
 3. The Config API
 
-Config has been used successfully in many projects at Nomura.
+Config is based on a successful library called Kozo Config.
 
 ## Scopes
 
@@ -20,14 +20,12 @@ configurations. For example, the configuration for the Report Service
 would be defined by this stack of configurations:
 
 - Report Service
-- Report Service - Environment specific
-- Report Service - AppID specific
+- Logging
 - Base Service
-- Base Service - Environment specific
 - Data Client
-- Data Client - Environment specific
 - Login Client
-- Login Client - Environment specific
+- Environment-specific
+- AppID-specific
 
 All of the configuration files are merged together, with values in files
 lower in the list overriding values with the same key in higher-level
@@ -36,12 +34,12 @@ files.
 In this example, the Report Service configuration contains all of the
 properties specific to that application.
 
-Environment-specific configurations contain _only_ the properties that
-are needed for that enviroment (for example, hostnames, ports, etc).
-
 Configurations for specific libraries or clients are defined in one
 place and reused across multiple applications. This avoids having client
 or library-specific properties duplicated across multiple applications.
+
+Environment-specific and AppID-specific configurations contain _only_ the properties that
+are needed for that enviroment (for example, hostnames, ports, etc).
 
 Here is what the scopes definition would look like for the Report
 Service applcation that we have been discussing:
@@ -49,41 +47,33 @@ Service applcation that we have been discussing:
 ```
 scopes = [
     {
-        name = report-application
+        name = report-service
         path = "file://config/report-service.conf"
     }
     {
-        name = report-environment
-        path = "http://git-config-${environment}/config/report/report-${environment}.conf"
-    }
-    {
-        name = report-appId
-        path = "http://git-config-${environment}/config/report/report-${appId}.conf"
+        name = logging
+        path = "http://git-config-dev/config/logging/logging.conf"
     }
     {
         name = base-service
         path = "http://git-config-dev/config/base/base-service.conf"
     }
     {
-        name = base-service-environment
-        path = "http://git-config-${environment}/config/base/base-service-${environment}.conf"
-    }    
-    {
         name = data-client
         path = "http://git-config-dev/config/data/data-client.conf"
-    }
-    {
-        name = data-client-environment
-        path = "http://git-config-${environment}/config/data/data-client-${environment}.conf"
     }
     {
         name = login-client
         path = "http://git-config-dev/config/login/login-client.conf"
     }
     {
-        name = login-client-environment
-        path = "http://git-config-${environment}/config/login/login-client-${environment}.conf"
-    }    
+        name = per-environment
+        path = "http://git-config-${environment}/config/environment/${environment}.conf"
+    }
+    {
+        name = per-appId
+        path = "http://git-config-${environment}/config/appId/${appId}.conf"
+    }
 ]
 ```
 
@@ -124,34 +114,34 @@ Properties in configurations at a lower level in the scopes definition
 override corresponding properties defined in a higher level
 configuration.
 
-For example, let's say that Puneet wants to override
-`report.some-timeout` to 10 seconds.
+For example, let's say that Puneet wants to override the property
+`report.service.someTimeout` to 10 seconds.
 
 The main Report Service configuration
-`file://config/report-service.conf` would look like:
+`file://config/report-service.conf` might look like:
 
 ```
 report {
     service {
         description: "..."
-        max-lines: 200
-        some-timeout: 30s
+        maxLines: 200
+        someTimeout: 30s
     }
 }
 ```
 
 The configuration file that Puneet manages in Production,
-`http://git-config-prod/config/report/report-prod.conf` could look like:
+`http://git-config-prod/config/environent/prod.conf` might look like:
 
 ```
-report.service.some-timeout = 10s
+report.service.someTimeout = 10s
 ```
 
 In the Report Service application it would use the Config API to get the
 property like:
 
 ```
-auto someTimeout = config.getDuration("report.service.some-timeout");
+auto someTimeout = config.getDuration("report.service.someTimeout");
 ```
 
 In development the value of `someTimeout` would be 30 seconds. In
@@ -168,16 +158,15 @@ System properties take priority over all configuration scopes. For
 example, if the Report Service was started like this:
 
 ```
-$ report-service -Dreport.service.some-timeout=15s
+$ report-service -Dreport.service.someTimeout=15s
 ```
 
-Then the value of `report.service.some-timeout` would be 15 seconds.
+Then the value of `report.service.someTimeout` would be 15 seconds.
 
 System properties can be used any time, but they are especially useful
 during development. Using system properties allows you to set values
 temporarily without accidentally committing the changes to the real
-configuration file. Use CLion's Run Configuration feature to create
-multiple runtime configurations with different system properties set.
+configuration file.
 
 ## HOCON
 
