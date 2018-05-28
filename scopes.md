@@ -177,12 +177,75 @@ HOCON was originally used in a configuration library called Typesafe
 Config, which is used by the Akka actor toolkit and the Play Web
 Framework.
 
+Note: HOCON is an optional but **highly** recommended part of Config.
+The other parts of Config (Scopes and the Config API) can be implemented
+without HOCON. HOCON could be added later in a separate sprint.
+
 ### Improvements over JSON
 
-You can use pure-JSON for HOCON configurations, but HOCON supports a
-more human-readable syntax as well.
+#### Human Readable
 
-#### TODO
+You can use pure-JSON for HOCON configurations, but HOCON supports a
+more human-readable syntax as well. For example:
+
+```
+report {
+   someCount = 100
+}
+```
+
+Notice how
+- Root braces were not needed
+- Keys did not need to be quoted
+- Equal sign can be used instead of colon to separate key from value
+
+This is in contrast to the pure JSON:
+
+```
+{
+    "report": {
+        "someCount": 100
+    }
+}
+```
+
+
+#### Durations
+
+Many configuration values are durations, so duration values are
+supported directly. In the example below, `someTimeout` has a value of
+30 seconds.
+
+```
+report {
+     someTimeout = 30s
+}
+```
+
+#### Substitutions
+
+Substitutions are a way of referring to other parts of the
+configuration.
+
+```
+key = ${animal.favorite} is my favorite animal
+```
+
+You can also use system properties or environment variables as
+substitutions.
+
+#### The += field separator
+
+You can append objects using the `+=` syntax. In the example below `b`
+is appended to `a`. Note that `a` can be a string or an object.
+
+```
+a += b
+```
+
+This is especially handy in a stack of scopes where a higher level scope
+can append a value from a lower scope.
+
 
 ### cpp-hocon
 
@@ -200,16 +263,16 @@ cpp-hocon).
 
 ### Release to QA
 
-#### TODO - what does this mean specifically?
-
-The QA environment override configuration is located in
-`config/environment/qa.conf` in the Development Configuration Git
-repository
+The QA environment override configuration is located at
+`http://git-config-qa/config/environment/qa.conf`. Whenever a change is
+desired for the QA environment someone with access to the QA
+Configuration Git repo would make the change to
+`config/environment/qa.conf`, commit and push.
 
 ### Data Service Moving Hosts
 
-The Data Service host is located in the environment-specific
-override configuration file.
+The Data Service host is located in the environment-specific override
+configuration file.
 
 For example, to move the Data Service host in Development, edit the file
 `config/environment/dev.conf` in the Development Configuration Git
@@ -236,7 +299,11 @@ scopes:
 }
 ```
 
-`**/config/local.conf` would be added to `.gitignore`.
+Then add the following to `.gitignore`:
+
+```
+**/config/local.conf
+```
 
 ### Export To JSON for LLM
 

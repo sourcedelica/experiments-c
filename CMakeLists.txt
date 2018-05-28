@@ -23,7 +23,7 @@ include_directories(${CMAKE_SOURCE_DIR})
 add_definitions(-DDEBUG)
 
 
-add_executable(catch_example catch_example.cpp catch_main.cpp CatchTests.cpp)
+add_executable(catch_example catch_example.cpp catch_main.cpp CatchTests.cpp pimpl_101_widget.cpp pimpl_101_widget.h)
 target_link_libraries(catch_example CONAN_PKG::catch2)
 
 add_executable(condition_variable_ping_pong condition_variable_ping_pong.cpp)
@@ -41,6 +41,9 @@ add_executable(is_detected is_detected.cpp)
 add_executable(grandchild_override grandchild_override.cpp)
 add_executable(numeric_range numeric_range.cpp)
 add_executable(pretty_sfinae pretty_sfinae.cpp)
+
+add_executable(pimpl_100 pimpl_100_widget.cpp pimpl_100.cpp)
+add_executable(pimpl_101 pimpl_101.cpp pimpl_101_widget.cpp pimpl_101_h.h pimpl_101_impl.h)
 
 add_executable(ranges ranges.cpp)
 target_link_libraries(ranges CONAN_PKG::range-v3)
