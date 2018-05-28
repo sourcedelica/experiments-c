@@ -64,6 +64,8 @@ target_link_libraries(type_index CONAN_PKG::boost)
 add_executable(type_safe type_safe.cpp)
 target_link_libraries(type_safe CONAN_PKG::type_safe CONAN_PKG::debug_assert)
 
+add_executable(using_namespace using_namespace.cpp)
+
 add_executable(variadic_fmin variadic_fmin.cpp)
 
 add_executable(variant_server variant_server.cpp match.h)

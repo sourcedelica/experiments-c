@@ -9,7 +9,6 @@ protobuf/3.5.2@bincrafters/stable
 range-v3/0.3.5@ericniebler/stable
 spdlog/0.16.3@bincrafters/stable
 type_safe/0.1@Manu343726/testing
-zlib/1.2.11@conan/stable
 
 # TODO - folly
 # TODO - google/fruit
