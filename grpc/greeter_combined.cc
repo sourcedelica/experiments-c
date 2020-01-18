@@ -19,7 +19,7 @@ using helloworld::Greeter;
 
 class GreeterClient {
 public:
-    GreeterClient(std::shared_ptr<Channel> channel)
+    explicit GreeterClient(std::shared_ptr<Channel> channel)
             : stub_(Greeter::NewStub(channel)) {}
 
     // Assembles the client's payload, sends it and presents the response back
