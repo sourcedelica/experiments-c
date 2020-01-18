@@ -1,20 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(experiments)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 
 # Run "conan install .." in the "build" directory to create this file
 if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
     include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
     conan_basic_setup(TARGETS)
 endif()
-
-# The find_package packages come from vcpkg
-# To integrate with this CMakeLists.txt
-# cd <top of tree>/cmake-build-debug
-# cmake .. -DCMAKE_TOOLCHAIN_FILE=/Users/eric/IdeaProjects/vcpkg/scripts/buildsystems/vcpkg.cmake
-
-#find_package(range-v3 REQUIRED)
 
 # Add top directory to include path
 include_directories(${CMAKE_SOURCE_DIR})
@@ -30,6 +23,8 @@ add_executable(condition_variable_ping_pong condition_variable_ping_pong.cpp)
 target_compile_options(condition_variable_ping_pong PRIVATE -fsanitize=thread)
 target_link_libraries(condition_variable_ping_pong PRIVATE -fsanitize=thread)
 
+add_executable(condition_variables condition_variables.cpp)
+
 add_executable(cu_ordering_test CUTrace.h cu_ordering_test.cpp cu_ordering_test2.cpp)
 add_executable(experiments main.cpp)
 
@@ -41,6 +36,7 @@ add_executable(is_detected is_detected.cpp)
 add_executable(grandchild_override grandchild_override.cpp)
 add_executable(numeric_range numeric_range.cpp)
 add_executable(pretty_sfinae pretty_sfinae.cpp)
+add_executable(overloaded overloaded.cpp)
 
 add_executable(pimpl_100 pimpl_100_widget.cpp pimpl_100.cpp)
 add_executable(pimpl_101 pimpl_101.cpp pimpl_101_widget.cpp pimpl_101_h.h pimpl_101_impl.h)
@@ -78,5 +74,5 @@ target_link_libraries(variant_server CONAN_PKG::boost)
 #add_subdirectory(caf)
 #add_subdirectory(common)
 #add_subdirectory(gaffer)
-#add_subdirectory(grpc)
+add_subdirectory(grpc)
 add_subdirectory(zmq)

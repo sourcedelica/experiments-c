@@ -64,7 +64,7 @@ class GreeterServiceImpl final : public Greeter::Service {
 };
 
 void RunServer() {
-    std::string server_address("0.0.0.0:50051");
+    std::string server_address("0.0.0.0:5005");
     GreeterServiceImpl service;
 
     ServerBuilder builder;
@@ -89,7 +89,7 @@ int main(int argc, char** argv) {
     std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 
     GreeterClient greeter(grpc::CreateChannel(
-            "localhost:50051", grpc::InsecureChannelCredentials()));
+            "localhost:5005", grpc::InsecureChannelCredentials()));
     std::string user("world");
     std::string reply = greeter.SayHello(user);
     std::cout << "Greeter received: " << reply << std::endl;

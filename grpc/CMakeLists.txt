@@ -1,6 +1,10 @@
 get_filename_component(hw_proto "./helloworld.proto" ABSOLUTE)
 get_filename_component(hw_proto_path "${hw_proto}" PATH)
 
+set(Protobuf_USE_STATIC_LIBS ON)
+Find_Package(Protobuf)
+Find_Package(grpc)
+
 # Generated sources
 protobuf_generate_cpp(hw_proto_srcs hw_proto_hdrs "${hw_proto}")
 set(hw_grpc_srcs "${CMAKE_CURRENT_BINARY_DIR}/helloworld.grpc.pb.cc")
@@ -9,7 +13,7 @@ add_custom_command(
       OUTPUT "${hw_grpc_srcs}" "${hw_grpc_hdrs}"
       COMMAND ${PROTOBUF_PROTOC_EXECUTABLE}
       ARGS --grpc_out "${CMAKE_CURRENT_BINARY_DIR}" -I ${hw_proto_path}
-        --plugin=protoc-gen-grpc="${GRPC_BIN_DIR}/grpc_cpp_plugin"
+        --plugin=protoc-gen-grpc="${CONAN_BIN_DIRS_GRPC}/grpc_cpp_plugin"
         "${hw_proto}"
       DEPENDS "${hw_proto}")
 
@@ -23,7 +27,5 @@ foreach(_target
     ${hw_proto_srcs}
     ${hw_grpc_srcs})
   target_link_libraries(${_target} PRIVATE
-    ${PROTOBUF_LIBS}
-    ${GRPC_LIBS}
-    ${ZLIB_LIBS})
+    CONAN_PKG::protobuf CONAN_PKG::grpc CONAN_PKG::zlib)
 endforeach()

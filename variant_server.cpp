@@ -1,6 +1,10 @@
-#include <string>
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "OCUnusedGlobalDeclarationInspection"
+#pragma ide diagnostic ignored "MemberFunctionCanBeStatic"
+
 #include <iostream>
 #include <unordered_map>
+#include <utility>
 #include <boost/variant.hpp>
 #include "match_hana.h"
 
@@ -34,7 +38,7 @@ private:
     void registerComponent(T&& policy) {
         std::string name = policy.name();
         std::cout << "Registering component: " << name << std::endl;
-        components.emplace(name, std::move(policy));
+        components.emplace(name, std::forward<T>(policy));
     }
 
     template <typename T, typename ...Tz>
@@ -74,11 +78,12 @@ public:
     NetworkA(const NetworkA&) = delete;       // Move-only
     NetworkA& operator=(NetworkA&) = delete;
 
-    template <typename ...Ts> NetworkA(CompositeServer<Ts...>* server) : server(server) {}
+    template <typename ...Ts>
+    explicit NetworkA(CompositeServer<Ts...>* server) : server(server) {}
     ~NetworkA() { std::cout << "Destroying: " << Name << std::endl; }
 
     static constexpr const char* Name = "NetworkA";
-    std::string name() { return Name; }
+    static std::string name() { return Name; }
     void close() { std::cout << "Closing: " << Name << std::endl; }
     void connect() { std::cout << "Connecting: " << Name << std::endl; }
     void networkA() {}
@@ -94,11 +99,12 @@ public:
     NetworkB(const NetworkB&) = delete;
     NetworkB& operator=(NetworkB&) = delete;
     
-    template <typename ...Ts> NetworkB(CompositeServer<Ts...>* server) : server(server) {}
+    template <typename ...Ts>
+    explicit NetworkB(CompositeServer<Ts...>* server) : server(server) {}
     ~NetworkB() { std::cout << "Destroying: " << Name << std::endl; }
 
     static constexpr const char* Name = "NetworkB";
-    std::string name() { return Name; }
+    static std::string name() { return Name; }
     void close() { std::cout << "Closing: " << Name << std::endl; }
     void connect() { std::cout << "Connecting: " << Name << std::endl; }
     void networkB() {}
@@ -115,11 +121,11 @@ public:
     Database& operator=(Database&) = delete;
 
     template <typename ...Ts>
-    Database(CompositeServer<Ts...>* server) : server(server) {}
+    explicit Database(CompositeServer<Ts...>* server) : server(server) {}
     ~Database() { std::cout << "Destroying: " << Name << std::endl; }
 
     static constexpr const char* Name = "Database";
-    std::string name() { return Name; }
+    static std::string name() { return Name; }
     void close() { std::cout << "Closing: " << Name << std::endl; }
     void database() {}
 
@@ -130,3 +136,5 @@ private:
 int main(int argc, char **argv) {
     CompositeServer<NetworkA, NetworkB, Database> server{};
 }
+
+#pragma clang diagnostic pop
