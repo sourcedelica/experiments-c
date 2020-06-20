@@ -27,5 +27,5 @@ foreach(_target
     ${hw_proto_srcs}
     ${hw_grpc_srcs})
   target_link_libraries(${_target} PRIVATE
-    CONAN_PKG::protobuf CONAN_PKG::grpc CONAN_PKG::zlib)
+    CONAN_PKG::grpc)
 endforeach()

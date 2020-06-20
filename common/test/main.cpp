@@ -1,6 +1,7 @@
 #include "main.h"
 #include <thread>
-#include "catch_with_main.hpp"
+#define CATCH_CONFIG_MAIN
+#include "catch2/catch.hpp"
 
 bool waitForChange(std::function<bool()> predicate, int tries, int sleepMs) {
     while (!predicate() && tries) {

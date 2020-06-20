@@ -76,7 +76,7 @@ target_link_libraries(variant_server CONAN_PKG::boost)
 
 
 add_subdirectory(caf)
-#add_subdirectory(common)
+add_subdirectory(common)
 #add_subdirectory(gaffer)
-#add_subdirectory(grpc)
+add_subdirectory(grpc)
 add_subdirectory(zmq)

@@ -52,7 +52,7 @@ public:
         return error_;
     }
 
-    T &value() const noexcept {
+    T &value() noexcept {
         return value_;
     }
 

@@ -1,6 +1,6 @@
 #include <map>
-#include "common/Expected.h"
-#include "catch.hpp"
+#include "../Expected.h"
+#include "catch2/catch.hpp"
 
 namespace {
     template <typename T>

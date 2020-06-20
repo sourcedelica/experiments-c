@@ -1,4 +1,4 @@
-#include "catch.hpp"
+#include "catch2/catch.hpp"
 #include "../ScopedThread.h"
 #include "main.h"
 #include <iostream>
