@@ -9,11 +9,15 @@ if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
     conan_basic_setup(TARGETS)
 endif()
 
-# Add top directory to include path
-include_directories(${CMAKE_SOURCE_DIR})
-
 # Switch on DEBUG code
 add_definitions(-DDEBUG)
+
+find_package(Protobuf 3 REQUIRED)
+if(NOT PROTOBUF_PROTOC_EXECUTABLE)
+    message(FATAL_ERROR "CMake was unable to set PROTOBUF_PROTOC_EXECUTABLE")
+else()
+    message(STATUS "PROTOBUF_PROTOC_EXECUTABLE: ${PROTOBUF_PROTOC_EXECUTABLE}")
+endif()
 
 
 add_executable(catch_example catch_example.cpp catch_main.cpp CatchTests.cpp pimpl_101_widget.cpp pimpl_101_widget.h)
@@ -71,8 +75,8 @@ add_executable(variant_server variant_server.cpp match.h)
 target_link_libraries(variant_server CONAN_PKG::boost)
 
 
-#add_subdirectory(caf)
+add_subdirectory(caf)
 #add_subdirectory(common)
 #add_subdirectory(gaffer)
-add_subdirectory(grpc)
+#add_subdirectory(grpc)
 add_subdirectory(zmq)

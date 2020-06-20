@@ -1,5 +1,5 @@
 [build_requires]
-protoc_installer/3.9.1@bincrafters/stable
+protoc_installer/3.6.1@bincrafters/stable
 
 [requires]
 boost/1.72.0
@@ -8,10 +8,10 @@ caf/0.17.3@bincrafters/stable
 catch2/2.11.0
 cppzmq/4.3.0@bincrafters/stable
 fmt/6.1.2
-grpc/1.25.0@inexorgame/stable
+#grpc/1.25.0@inexorgame/stable
 libsodium/1.0.18
 #nanodbc/latest@signal9/stable
-protobuf/3.9.1@bincrafters/stable
+protobuf/3.6.1@bincrafters/stable
 range-v3/0.9.1
 spdlog/1.4.2
 type_safe/0.1@Manu343726/testing
