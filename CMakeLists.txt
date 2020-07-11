@@ -19,6 +19,7 @@ else()
     message(STATUS "PROTOBUF_PROTOC_EXECUTABLE: ${PROTOBUF_PROTOC_EXECUTABLE}")
 endif()
 
+add_executable(assign_derived_classes assign_derived_classes.cpp)
 
 add_executable(catch_example catch_example.cpp catch_main.cpp CatchTests.cpp pimpl_101_widget.cpp pimpl_101_widget.h)
 target_link_libraries(catch_example CONAN_PKG::catch2)
@@ -28,7 +29,6 @@ target_compile_options(condition_variable_ping_pong PRIVATE -fsanitize=thread)
 target_link_libraries(condition_variable_ping_pong PRIVATE -fsanitize=thread)
 
 add_executable(condition_variables condition_variables.cpp)
-
 add_executable(cu_ordering_test CUTrace.h cu_ordering_test.cpp cu_ordering_test2.cpp)
 add_executable(experiments main.cpp)
 
@@ -67,8 +67,8 @@ target_link_libraries(type_index CONAN_PKG::boost)
 add_executable(type_safe type_safe.cpp)
 target_link_libraries(type_safe CONAN_PKG::type_safe CONAN_PKG::debug_assert)
 
+add_executable(universal_reference_wrapper universal_reference_wrapper.cpp)
 add_executable(using_namespace using_namespace.cpp)
-
 add_executable(variadic_fmin variadic_fmin.cpp)
 
 add_executable(variant_server variant_server.cpp match.h)

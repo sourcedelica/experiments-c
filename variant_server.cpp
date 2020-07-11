@@ -136,5 +136,3 @@ private:
 int main(int argc, char **argv) {
     CompositeServer<NetworkA, NetworkB, Database> server{};
 }
-
-#pragma clang diagnostic pop
