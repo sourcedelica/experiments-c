@@ -3,26 +3,33 @@ project(experiments)
 
 set(CMAKE_CXX_STANDARD 17)
 
-# Run "conan install .." in the "build" directory to create this file
-if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-    conan_basic_setup(TARGETS)
-endif()
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
+list(APPEND CMAKE_PREFIX_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-# Switch on DEBUG code
-add_definitions(-DDEBUG)
+include(conan)
+conan_cmake_run(CONANFILE conanfile.txt
+        BASIC_SETUP CMAKE_TARGETS
+        BUILD missing
+        CONAN_COMMAND /Users/eric/.pyenv/versions/3.9.6/bin/conan)
 
-find_package(Protobuf 3 REQUIRED)
-if(NOT PROTOBUF_PROTOC_EXECUTABLE)
-    message(FATAL_ERROR "CMake was unable to set PROTOBUF_PROTOC_EXECUTABLE")
-else()
-    message(STATUS "PROTOBUF_PROTOC_EXECUTABLE: ${PROTOBUF_PROTOC_EXECUTABLE}")
-endif()
+## Run "conan install .." in the "build" directory to create this file
+#if(EXISTS ${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+#    include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
+#    conan_basic_setup(TARGETS)
+#endif()
 
 add_executable(assign_derived_classes assign_derived_classes.cpp)
 
-add_executable(catch_example catch_example.cpp catch_main.cpp CatchTests.cpp pimpl_101_widget.cpp pimpl_101_widget.h)
+include(CTest)
+# TODO - after https://github.com/catchorg/Catch2/issues/1590 is fixed remove tw-Catch.cmake and CatchAddTests.cmake
+#  and replace the below with include(Catch).  It will use the code from the Conan catch2 package
+include(tw-Catch)
+add_executable(catch_example catch_example.cpp catch_main.cpp CatchTests.cpp)
+add_executable(catch_other catch_other.cpp)
 target_link_libraries(catch_example CONAN_PKG::catch2)
+target_link_libraries(catch_other CONAN_PKG::catch2)
+catch_discover_tests(catch_example)
+catch_discover_tests(catch_other)
 
 add_executable(condition_variable_ping_pong condition_variable_ping_pong.cpp)
 target_compile_options(condition_variable_ping_pong PRIVATE -fsanitize=thread)
@@ -35,9 +42,11 @@ add_executable(experiments main.cpp)
 add_executable(fmt fmt.cpp)
 target_link_libraries(fmt CONAN_PKG::spdlog)
 
+add_executable(FileWordCount FileWordCount.cpp)
 add_executable(func_perf func_perf.cpp func_perf_funcs.cpp)
 add_executable(is_detected is_detected.cpp)
 add_executable(grandchild_override grandchild_override.cpp)
+add_executable(myGuard myGuard.cpp)
 add_executable(numeric_range numeric_range.cpp)
 add_executable(pretty_sfinae pretty_sfinae.cpp)
 add_executable(overloaded overloaded.cpp)

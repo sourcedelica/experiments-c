@@ -1,24 +1,23 @@
 [build_requires]
 
 [requires]
-boost/1.72.0
-bzip2/1.0.8
-caf/0.17.3@bincrafters/stable
-catch2/2.11.0
+boost/1.76.0
+caf/0.17.6
+catch2/2.13.6
 cppzmq/4.6.0
-fmt/6.1.2
-folly/2019.10.21.00
-grpc/1.25.0@inexorgame/stable
+fmt/8.0.1
+#folly/2020.08.10.00
+grpc/1.38.0
 libsodium/1.0.18
 #nanodbc/latest@signal9/stable
-openssl/1.0.2t
-protoc_installer/3.6.1@bincrafters/stable
-protobuf/3.6.1@bincrafters/stable
-range-v3/0.9.1
-spdlog/1.4.2
+openssl/1.1.1k
+#protoc_installer/3.6.1@bincrafters/stable
+#protobuf/3.6.1@bincrafters/stable
+protobuf/3.17.1
+range-v3/0.11.0
+spdlog/1.9.0
 type_safe/0.2.1
-zlib/1.2.11
-zmq/4.3.2@bincrafters/stable
+zeromq/4.3.4
 
 # TODO - google/fruit
 # TODO - Google benchmark

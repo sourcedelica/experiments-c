@@ -2,8 +2,6 @@ get_filename_component(hw_proto "./helloworld.proto" ABSOLUTE)
 get_filename_component(hw_proto_path "${hw_proto}" PATH)
 
 set(Protobuf_USE_STATIC_LIBS ON)
-Find_Package(Protobuf)
-Find_Package(grpc)
 
 # Generated sources
 protobuf_generate_cpp(hw_proto_srcs hw_proto_hdrs "${hw_proto}")
