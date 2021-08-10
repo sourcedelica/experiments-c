@@ -36,6 +36,7 @@ target_compile_options(condition_variable_ping_pong PRIVATE -fsanitize=thread)
 target_link_libraries(condition_variable_ping_pong PRIVATE -fsanitize=thread)
 
 add_executable(condition_variables condition_variables.cpp)
+add_executable(const_non_const const_non_const.cpp)
 add_executable(cu_ordering_test CUTrace.h cu_ordering_test.cpp cu_ordering_test2.cpp)
 add_executable(experiments main.cpp)
 
